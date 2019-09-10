@@ -9,15 +9,14 @@ import "credentials.dart";
 import "reauth.dart";
 import "login_page.dart";
 import "reminder.dart";
+import "reminder_page.dart";
 import "new_page.dart";
 
 @JsonSerializable()
 class GetRequest {
     Credentials credentials;
 
-    GetRequest(Credentials credentials) {
-        this.credentials = credentials;
-    }
+    GetRequest(this.credentials);
 
     Map<String, dynamic> toJson() =>
     {
@@ -146,6 +145,14 @@ class ListPageState extends State<ListPage> {
                         ListTile(
                             title: Text(reminder.name),
                             subtitle: Text(reminder.description),
+                            onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ReminderPage(reminder),
+                                    ),
+                                );
+                            },
                         ),
                     ).toList(),
                 ),

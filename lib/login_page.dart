@@ -13,10 +13,7 @@ import "list_page.dart";
 class LoginRequest {
     String email, password;
 
-    LoginRequest(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
+    LoginRequest(this.email, this.password);
 
     Map<String, dynamic> toJson() =>
     {
