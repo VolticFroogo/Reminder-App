@@ -13,7 +13,7 @@ import "list_page.dart";
 class LoginRequest {
     String email, password;
 
-    LoginRequest(email, password) {
+    LoginRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -27,6 +27,11 @@ class LoginRequest {
 
 class LoginResponse {
     Credentials credentials;
+
+    LoginResponse.fromJSON(Map<String, dynamic> json) {
+        this.credentials.auth = json["Credentials"]["Auth"];
+        this.credentials.refresh = json["Credentials"]["Refresh"];
+    }
 }
 
 class LoginPage extends StatefulWidget {
@@ -138,13 +143,13 @@ class LoginPageState extends State<LoginPage> {
         }
 
         // Encode the login request to JSON.
-        String inputJSON = json.encode(LoginRequest(
+        var inputJSON = json.encode(LoginRequest(
             email.text,
             password.text,
         ));
 
         // Send the JSON request.
-        http.Response response = await http.post(
+        var response = await http.post(
             url,
             headers: headers,
             body: inputJSON,
@@ -155,12 +160,12 @@ class LoginPageState extends State<LoginPage> {
             case HttpStatus.ok:
                 // Successful login.
                 // Decode the response.
-                Map<String, dynamic> body = json.decode(response.body);
+                var body = json.decode(response.body);
                 // Set the global credentials value to our new credentials.
-                Credentials credentials = Credentials.fromJSON(body);
+                var loginResponse = LoginResponse.fromJSON(body);
 
                 // Save the credentials.
-                credentials.save();
+                loginResponse.credentials.save();
 
                 // Go to the list page.
                 Navigator.pushReplacement(

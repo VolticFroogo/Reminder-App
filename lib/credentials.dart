@@ -5,10 +5,11 @@ class Credentials {
 
     Credentials();
 
-    Credentials.fromJSON(Map<String, dynamic> json) {
-        this.auth = json["Credentials"]["Auth"];
-        this.refresh = json["Credentials"]["Refresh"];
-    }
+    Map<String, dynamic> toJson() =>
+    {
+        "Auth": this.auth,
+        "Refresh": this.refresh,
+    };
 
     void save() async {
         final prefs = await SharedPreferences.getInstance();
